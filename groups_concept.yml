@@ -1,0 +1,31 @@
+---
+
+-  hosts: all
+   become: true
+   tasks:
+
+    -  name: Update cache
+       apt:
+        update_cache: yes
+
+
+-  hosts: web_servers
+   become: true
+   tasks:
+
+     -  name: install apache2 and php
+        apt:
+         name:
+          -  apache2
+          -  libapache2-mod-php
+
+-  hosts: file_servers
+   become: true
+   tasks:
+
+     -  name: install ftp
+        apt:
+         name:
+          -  ftp
+
+

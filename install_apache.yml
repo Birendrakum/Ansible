@@ -1,18 +1,88 @@
 ---
 
-- hosts: all
+- hosts: all        #You can use group name instead of all to run command on servers inside a particular group
   become: true
   tasks:
 
-  -  name: checking update
+
+# This is for ubuntu
+
+  -  name: checking update 
      apt:
       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
 
   -  name: install apache2 package
      apt:
       name: apache2
+     when: ansible_distribution == "Ubuntu"
 
   -  name: add php support on hosts
      apt:
       name: libapache2-mod-php
       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+# This is for centos
+
+  -  name: checking update
+     dnf:
+      update_cache: yes
+     when: ansible_distribution == "CentOs"
+
+  -  name: install apache2 package
+     dnf:
+      name: httpd
+     when: ansible_distribution == "CentOs"
+
+  -  name: add php support on hosts
+     dnf:
+      name: php
+      state: latest
+     when: ansible_distribution == "CentOs"
+
+
+################################################################################################################################
+
+
+
+# Using one task to install multiple pacakges
+
+  -  name: install apache2 and php and update the cache
+     apt:
+       name:
+        -  apache2
+        -  libapache2-mod-php
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+
+
+  -  name: install apache2 and php and update the cache
+     dnf:
+       name:
+        -  httpd
+        -  php
+       update_cache: yes
+     when: ansible_distribution == "CentOs"
+
+
+##################################################################################################################
+
+
+# Combine centos and ubuntu into one task
+# We will use two variable "apache_package" and "php_package".
+#(Note) You have to define these two variable in inventory file for  each of the server
+
+  -  name: install apache and php and update the cache
+     tags: Once,Install 
+     package:
+      name:
+       -  "{{apache_package}}"
+       -  "{{php_package}}"
+      update_cache: yes
+
+
+###########################################################################################################################################################################################################
+
+
