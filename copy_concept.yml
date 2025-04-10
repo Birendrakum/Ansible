@@ -1,0 +1,12 @@
+---
+
+-  hosts: all
+   become: true
+   tasks:
+    - name: copy files to hosts
+      copy:
+        src: web_page.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644

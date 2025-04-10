@@ -1,0 +1,18 @@
+---
+
+
+-  hosts: all
+   become: true
+   tasks:
+    -  name: install apache2
+       tags: apache2
+       apt:
+         name: apache2
+    -  name: install php
+       tags: php
+       apt:
+         name: libapache2-mod-php
+    -  name:  update cache
+       tags: update
+       apt:
+        update_cache: yes
