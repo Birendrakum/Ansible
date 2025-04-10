@@ -7,6 +7,20 @@
       copy:
         src: web_page.html
         dest: /var/www/html/index.html
-        owner: root
+        owner: vboxuser
         group: root
-        mode: 0644
+        mode: 0777
+    - name: Install unzip
+      apt:
+        name: unzip
+    - name: Download and unzip the website
+      unarchive:
+        src: https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip
+        dest: /home/vboxuser/
+        remote_src: yes
+        mode: 0755
+        owner: root
+    - name: host the website
+      command:
+        cmd: cp -r /home/vboxuser/finexo-html/. /var/www/html
+
