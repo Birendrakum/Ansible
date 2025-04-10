@@ -1,0 +1,65 @@
+# Today we will see how we can use 'when' keyword to run commands on Vms based on some properties.
+# If u want to get propety of Vms use 'ansible all -m ansible.builtin.setup'
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+
+# This is for ubuntu
+
+  -  name: checking update 
+     apt:
+      update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+
+  -  name: install apache2 package
+     apt:
+      name: apache2
+     when: ansible_distribution == "Ubuntu"
+
+  -  name: add php support on hosts
+     apt:
+      name: libapache2-mod-php
+      state: latest
+     when: ansible_distribution == "Ubuntu"
+
+
+# This is for centos
+  -  name: checking update
+     dnf:
+      update_cache: yes
+     when: ansible_distribution == "CentOs"
+
+  -  name: install apache2 package
+     dnf:
+      name: httpd
+     when: ansible_distribution == "CentOs"
+
+  -  name: add php support on hosts
+     dnf:
+      name: php
+      state: latest
+     when: ansible_distribution == "CentOs"
+
+
+##############################################################################>
+
+
+# Combine centos and ubuntu into one task
+# We will use two variable "apache_package" and "php_package".
+#(Note) You have to define these two variable in inventory file for  each of th>
+
+  -  name: install apache and php and update the cache
+     tags: Once,Install
+     package:
+      name:
+       -  "{{apache_package}}"
+       -  "{{php_package}}"
+      update_cache: yes
+
+
+###############################################################################>
+
