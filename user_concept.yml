@@ -1,0 +1,13 @@
+---
+
+-  hosts: all
+   become: true
+   tasks:
+    - name: Create a user
+      user:
+        name: example_user
+        state: present
+    - name: Create a user
+      user:
+        name: Lock the user account
+        state: lock    
