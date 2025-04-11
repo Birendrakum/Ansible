@@ -6,3 +6,16 @@
       file:
         path: /tmp/example.txt
         state: touch
+    - name: Create a file
+      file:
+        path: /tmp/example.txt
+        state: directory
+    - name: Create a file
+      file:
+        path: /tmp/example.txt
+        state: absent
+-    name: Create a symbolic link
+     file:
+       src: /path/to/target
+       dest: /path/to/symlink
+       state: link
