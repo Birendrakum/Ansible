@@ -1,6 +1,6 @@
 ---
 
-- hosts: all        #You can use group name instead of all to run command on servers inside a particular group
+- hosts: all        
   become: true
   tasks:
   -  name: checking update
